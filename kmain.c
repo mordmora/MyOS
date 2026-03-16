@@ -14,13 +14,14 @@ void init_routine(){
 
 }
 
+__attribute__((noreturn))
 void kernel_main(void){
     init_routine();
     kprintf("[STARTED] kernel v1.1\n");
 
-    volatile int a = 10;
-    volatile int b = 0;
-    int c = a / b;
-    (void)c;
+    //volatile int a = 10;
+    //volatile int b = 0;
+    //int c = a / b;
+    //(void)c;
     //__asm__ volatile("int $3");
 }

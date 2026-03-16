@@ -32,7 +32,7 @@ void init_gdt(){
     
     init_table_segment(0, 0, 0, 0, 0); //NULL
 
-    init_table_segment(1, 0, 0xFFFFFFFF, 0x9A, 0xCF); //kmode code segment
+    init_table_segment(1, 0, 0xFFFFFFFF, 0x9A, 0xAF); //kmode code segment
     
     init_table_segment(2, 0, 0xFFFFFFFF, 0x92, 0xCF); //kmode data segment
 
