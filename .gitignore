@@ -1,0 +1,7 @@
+# Build outputs
+build/
+kernel.elf
+os.iso
+
+# Local editor settings
+.vscode/
