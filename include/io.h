@@ -8,4 +8,6 @@ extern void outb(unsigned short port, unsigned short data);
 
 extern int inb(unsigned short port);
 
+extern int io_wait();
+
 #endif

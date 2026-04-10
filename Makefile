@@ -1,12 +1,34 @@
-OBJECTS = loader.o kmain.o io.o strings.o serial.o framebuffer.o gdt.o init_gdt.o printf.o idt.o isr.o
+SRCDIR = src
+INCDIR = include
+BUILDDIR = build
+
+OBJECTS = $(BUILDDIR)/loader.o \
+          $(BUILDDIR)/kmain.o \
+          $(BUILDDIR)/io.o \
+          $(BUILDDIR)/strings.o \
+          $(BUILDDIR)/serial.o \
+          $(BUILDDIR)/framebuffer.o \
+          $(BUILDDIR)/gdt.o \
+          $(BUILDDIR)/init_gdt.o \
+          $(BUILDDIR)/printf.o \
+          $(BUILDDIR)/idt.o \
+          $(BUILDDIR)/isr.o \
+          $(BUILDDIR)/exceptions.o \
+          $(BUILDDIR)/error.o \
+          $(BUILDDIR)/pic.o \
+          $(BUILDDIR)/pit.o
+
 CC = gcc
-CFLAGS = -m32 -nostdlib -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
+CFLAGS = -m32 -nostdlib -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -I$(INCDIR) -c
 
 LDFLAGS = -T link.ld -melf_i386
 AS = nasm 
 ASFLAGS = -f elf
 
-all: kernel.elf
+all: $(BUILDDIR) kernel.elf
+
+$(BUILDDIR):
+	mkdir -p $(BUILDDIR)
 
 kernel.elf: $(OBJECTS)
 	ld $(LDFLAGS) $(OBJECTS) -o kernel.elf
@@ -27,11 +49,11 @@ os.iso: kernel.elf
 run: os.iso
 	qemu-system-i386 -cdrom os.iso -m 256 -boot d -serial stdio
 
-%.o: %.c 
-	$(CC) $(CFLAGS)  $< -o $@
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c | $(BUILDDIR)
+	$(CC) $(CFLAGS) $< -o $@
 
-%.o: %.s
+$(BUILDDIR)/%.o: $(SRCDIR)/%.s | $(BUILDDIR)
 	$(AS) $(ASFLAGS) $< -o $@
 
 clean: 
-	rm -rf *.o kernel.elf os.iso 
+	rm -rf $(BUILDDIR) kernel.elf os.iso 

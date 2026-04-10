@@ -28,6 +28,10 @@ typedef struct {
 
 void init_idt();
 
+typedef void (*isr_t)(reg_frame_t*);
+
+void register_interrupt_handler(uint8_t n, isr_t handler);
+
 #define IDT_MAX_DESCRIPTORS 256
 
 #endif
